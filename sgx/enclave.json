@@ -1,0 +1,15 @@
+{
+    "exe": "gotun",
+    "key": "private.pem",
+    "debug": true,
+    "heapSize": 512,
+    "executableHeap": false,
+    "productID": 1,
+    "securityVersion": 1,
+    "files": [
+        {
+            "source": "server.conf",
+            "target": "server.conf"
+        }
+    ]
+}
