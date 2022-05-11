@@ -138,7 +138,9 @@ func (c *Conf) SafeOpen(dn string, secure bool) ([]*os.File, error) {
 		}
 		m = fi.Mode()
 		if (m & mask) != 0 {
-			return fail(fmt.Errorf("%s: insecure perms (group/world read/write)", nm))
+			// return fail(fmt.Errorf("%s: insecure perms (group/world read/write)", nm))
+			fmt.Printf("insecure perms on %s (group/world write), countinuing...", nm)
+
 		}
 	}
 	return files, nil
@@ -154,7 +156,9 @@ func checkStat(fi os.FileInfo, nm string, secure bool) error {
 
 	m := fi.Mode()
 	if (m & mask) != 0 {
-		return fmt.Errorf("insecure perms on %s (group/world read/write)", nm)
+		// return fmt.Errorf("insecure perms on %s (group/world read/write)", nm)
+		fmt.Printf("insecure perms on %s (group/world write), countinuing...", nm)
+
 	}
 
 	// walk every parent of the given name 'nm' and make sure perms are good all the way
@@ -170,7 +174,8 @@ func checkStat(fi os.FileInfo, nm string, secure bool) error {
 		}
 		m = fi.Mode()
 		if (m & 0022) != 0 {
-			return fmt.Errorf("insecure perms on %s (group/world write)", dir)
+			// return fmt.Errorf("insecure perms on %s (group/world write)", dir)
+			fmt.Printf("insecure perms on %s (group/world write), countinuing...", dir)
 		}
 
 		nm = dir

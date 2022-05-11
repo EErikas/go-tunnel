@@ -12,16 +12,16 @@
             "target": "server.conf"
         },
         {
-            "source": "server.crt",
-            "target": "server.crt"
+            "source": "certs/server.crt",
+            "target": "certs/server.crt"
         },
         {
-            "source": "server.key",
-            "target": "server.key"
+            "source": "certs/server.key",
+            "target": "certs/server.key"
         },
         {
-            "source": "ca.crt",
-            "target": "ca.crt"
+            "source": "certs/ca.crt",
+            "target": "certs/ca.crt"
         }
     ]
 }

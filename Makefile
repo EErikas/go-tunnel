@@ -16,5 +16,5 @@ enclave:
 	cd src && ego-go build -o gotun
 	mkdir -p bin/enclave
 	mv src/gotun bin/enclave/gotun
-	cp sgx/* bin/enclave/
+	cp -r sgx/* bin/enclave/
 	cd bin/enclave && ego sign
