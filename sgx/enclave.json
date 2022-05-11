@@ -10,6 +10,18 @@
         {
             "source": "server.conf",
             "target": "server.conf"
+        },
+        {
+            "source": "server.crt",
+            "target": "server.crt"
+        },
+        {
+            "source": "server.key",
+            "target": "server.key"
+        },
+        {
+            "source": "ca.crt",
+            "target": "ca.crt"
         }
     ]
 }
