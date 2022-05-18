@@ -1,7 +1,7 @@
-module github.com/opencoff/go-tunnel
+module github.com/EErikas/go-tunnel
 
 go 1.18
-
+replace github.com/lucas-clemente/quic-go v0.25.0 => ./quic-go
 require (
 	github.com/lucas-clemente/quic-go v0.25.0
 	github.com/opencoff/go-logger v0.5.1
