@@ -18,3 +18,8 @@ enclave:
 	mv src/gotun bin/enclave/gotun
 	cp -r sgx/* bin/enclave/
 	cd bin/enclave && ego sign
+
+update:
+	rm -rf src/net
+	cd src && git clone https://github.com/EErikas/net
+		rm -rf src/net/.git*
