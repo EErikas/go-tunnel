@@ -1,6 +1,7 @@
 # go-tunnel - Robust Quic/TLS Tunnel (Stunnel replacement)
 
 ## What is it?
+
 A supercharged [Stunnel](https://www.stunnel.org) replacement written in golang.
 is in a sense a proxy enabling addition of network-encryption to existing
 clients without any source code changes.
@@ -20,12 +21,13 @@ clients without any source code changes.
 - Strong ciphers and curves preferred on both client & server
 - Comes with end-to-end tests covering variety of scenarios
 
-Note that TLS private keys need to be *unencrypted*; we don't support password protected
+Note that TLS private keys need to be _unencrypted_; we don't support password protected
 private keys yet. The main reason for this is that when `gotun` is daemonized, it may not be
 possible to obtain the password in an interactive manner. Additionally, for SNI support, it may be
 impossible to ask for interactive password in the middle of a client connection setup.
 
 ## Motivating Example
+
 Lets assume you have a public server on `proxy.example.com`
 listening on Quic/UDP supporting SOCKS protocol for connecting to
 outbound destinations. For security reasons, you want to limit
@@ -77,6 +79,28 @@ to STDOUT. It's not recommended to run a production server in debug
 mode (too many log messages).
 
 ## Building go-tunnel
+
+### SGX version
+
+- To build appication for SGX, make sure to do the following:
+  - Make sure you have [EGo](https://github.com/edgelesssys/ego) installed
+  - Modify `sgx/server.conf` file to your needs
+  - Generate required certificates and place them in `sgx/certs` folder
+  - Run the following in the project root
+    ```bash
+    make enclave
+    ```
+  - Once done, application and all dependencies can be found in `bin/enclave`
+  - Launch the application by one of the following commands:
+    ```bash
+    # In simulation mode (if device does not support SGX)
+    OE_SIMULATION=1 ego run gotun server.conf
+    # On SGX capable hardware
+    ego run gotun server.conf
+    ```
+
+### Regular version
+
 You need a reasonably new Golang toolchain (1.14+). And the `go`
 executable needs to be in your path. Then run:
 
@@ -103,16 +127,15 @@ The script also has other options. To see them::
 
     ./build --help
 
-
 ### Running go-tunnel
+
 `gotun` takes a YAML config file as its sole command line argument. The server
-does *not* fork itself into the background. If you need that capability, explore your
+does _not_ fork itself into the background. If you need that capability, explore your
 platform's init toolchain (e.g., `start-stop-daemon`).
 
-The server can run in debug mode; e.g., on Linux x86\_64:
+The server can run in debug mode; e.g., on Linux x86_64:
 
     ./bin/linux-amd64/gotun -d etc/gotun.conf
-
 
 In debug mode, the logs are sent to STDOUT and the debug level is set to DEBUG
 (i.e., verbose).
@@ -121,10 +144,10 @@ In the absence of the `-d` flag, the default log level is INFO or
 whatever is set in the config file.
 
 ## Config File
+
 The config file is a YAML v2 document. A complete, self-explanatory example is below:
 
 ```yaml
-
 # Log file; can be one of:
 #  - Absolute path
 #  - SYSLOG
@@ -142,85 +165,84 @@ config-dir: /etc/gotun
 
 # Listeners
 listen:
-    # Listen plain text
-    -   address: 127.0.0.1:9090
-        allow: [127.0.0.1/8, 11.0.1.0/24, 11.0.2.0/24]
-        deny: []
+  # Listen plain text
+  - address: 127.0.0.1:9090
+    allow: [127.0.0.1/8, 11.0.1.0/24, 11.0.2.0/24]
+    deny: []
 
-        timeout:
-            connect: 5
-            read: 2
-            write: 2
+    timeout:
+      connect: 5
+      read: 2
+      write: 2
 
-        # limit to N reqs/sec globally
-        ratelimit:
-            global: 2000
-            per-host: 30
-            cache-size: 10000
+    # limit to N reqs/sec globally
+    ratelimit:
+      global: 2000
+      per-host: 30
+      cache-size: 10000
 
-        # Connect via TLS
-        connect:
-            address: host.name:443
-            bind: my.ip.address
-            tls:
-                cert: /path/to/crt
-                key: /path/to/key
-                # path to CA bundle that can verify the server certificate.
-                # This can be a file or a directory.
-                ca: /path/to/ca.crt
+    # Connect via TLS
+    connect:
+      address: host.name:443
+      bind: my.ip.address
+      tls:
+        cert: /path/to/crt
+        key: /path/to/key
+        # path to CA bundle that can verify the server certificate.
+        # This can be a file or a directory.
+        ca: /path/to/ca.crt
 
-            # if address is a name, then servername is populated from it.
-            # else, if it is an IP address, it must be set below.
-            # Not setting it => no verification (InsecureSkipVerify = true)
-            # servername: a.example.com
+      # if address is a name, then servername is populated from it.
+      # else, if it is an IP address, it must be set below.
+      # Not setting it => no verification (InsecureSkipVerify = true)
+      # servername: a.example.com
 
-    # Listen using TLS with SNI
-    -   address: 127.0.0.1:9443
-        allow: [127.0.0.1/8, 11.0.1.0/24, 11.0.2.0/24]
-        deny: []
-        timeout:
-            connect: 5
-            read: 2
-            write: 2
+  # Listen using TLS with SNI
+  - address: 127.0.0.1:9443
+    allow: [127.0.0.1/8, 11.0.1.0/24, 11.0.2.0/24]
+    deny: []
+    timeout:
+      connect: 5
+      read: 2
+      write: 2
 
-        tls:
-            sni: /path/to/cert/dir
+    tls:
+      sni: /path/to/cert/dir
 
-            # clientcert can be "required" or "optional" or "blank" or absent.
-            # if it is required/optional, then clientca must be set to the list of
-            # CAs that can verify a presented client cert.
-            client-cert: required
-            client-ca: /path/to/clientca.crt
+      # clientcert can be "required" or "optional" or "blank" or absent.
+      # if it is required/optional, then clientca must be set to the list of
+      # CAs that can verify a presented client cert.
+      client-cert: required
+      client-ca: /path/to/clientca.crt
 
-        # plain connect but use proxy-protocol v1 when speaking
-        # downstream
-        connect:
-            address: 55.66.77.88:80
-            proxyprotocol: v1
+    # plain connect but use proxy-protocol v1 when speaking
+    # downstream
+    connect:
+      address: 55.66.77.88:80
+      proxyprotocol: v1
 
+  # Listen on Quic + client auth and connect to SOCKS
+  - address: 127.0.0.1:8443
+    tls:
+      quic: true
+      cert: /path/to/crt
+      key: /path/to/key
+      # path to CA bundle that can verify the server certificate.
+      # This can be a file or a directory.
+      ca: /path/to/ca.crt
 
-    # Listen on Quic + client auth and connect to SOCKS
-    -   address: 127.0.0.1:8443
-        tls:
-            quic: true
-            cert: /path/to/crt
-            key: /path/to/key
-            # path to CA bundle that can verify the server certificate.
-            # This can be a file or a directory.
-            ca: /path/to/ca.crt
+      client-cert: required
+      client-ca: /path/to/clientca.crt
 
-            client-cert: required
-            client-ca: /path/to/clientca.crt
-
-        connect:
-            address: SOCKS
-
+    connect:
+      address: SOCKS
 ```
 
 The `etc/` directory has example configurations for running
 Quic+SOCKS on a public server and a local laptop.
 
 ## Using SNI
+
 SNI is exposed via domain specific certs & keys in the `tls.certdir` config block. SNI is
 enabled by setting `tls.sni` config element to `true`; and each hostname that is requested via
 SNI needs a cert and key file with the file prefix of hostname. e.g., if the client is looking
@@ -229,6 +251,7 @@ for hostname "blog.mydomain.com" via SNI, then `gotun` will look for `blog.mydom
 an example for SNI configured on listen address `127.0.0.1:9443`.
 
 ## Generating Local Certificates
+
 If you want client authentication and don't want the hassle of using
 openssl or a commercial CA for obtaining the certs, you can use
 [certik](https://github.com/opencoff/certik) to create an easy,
@@ -240,7 +263,7 @@ linux-amd64 platform:
 $ git clone https://github.com/opencoff/certik
 $ cd certik
 $ ./build -s
-$ ./bin/linux-amd64/certik ca.db init "client CA" 
+$ ./bin/linux-amd64/certik ca.db init "client CA"
 $ ./bin/linux-amd64/certik ca.db user username@example.com
 $ ./bin/linux-amd64/certik ca.db export -o ca --ca
 $ ./bin/linux-amd64/certik ca.db export -o username username@example.com
@@ -256,6 +279,7 @@ and refer to it in the config file under "client-ca" and "tls.cert",
 "tls.key" respectively.
 
 ## Security
+
 `gotun` tries to be safe by default:
 
 - Opinionated TLS 1.3 configuration
@@ -264,6 +288,7 @@ and refer to it in the config file under "client-ca" and "tls.cert",
   writable)
 
 ## Performance Test
+
 Using iperf3 on two debian-linux (amd64) hosts connected via Gigabit Ethernet and `gotun` running on either end,
 the performance looks like so:
 
@@ -298,6 +323,7 @@ CPU Utilization: local/sender 1.8% (0.0%u/1.7%s), remote/receiver 9.0% (0.6%u/8.
 ```
 
 ## Access Control Rules
+
 Go-tunnel implements a flexible ACL by combination of
 allow/deny rules. The rules are evaluated in the following order:
 
@@ -312,68 +338,66 @@ allow/deny rules. The rules are evaluated in the following order:
 1. Allow all:
 
 ```yaml
-   allow: []
-   deny:  []
+allow: []
+deny: []
 ```
 
 2. Only allow specific subnets and deny everyone else:
 
 ```yaml
-    allow: [ 192.168.55.0/24, 172.16.10.0/24, 127.0.0.1/8 ]
-    deny: []
+allow: [192.168.55.0/24, 172.16.10.0/24, 127.0.0.1/8]
+deny: []
 ```
-
 
 3. Allow all except selected subnets:
 
 ```yaml
-    allow: []
-    deny: [ 192.168.80.0/24, 172.16.5.0/24 ]
+allow: []
+deny: [192.168.80.0/24, 172.16.5.0/24]
 ```
-
 
 4. Expliclty block certain hosts and explicitly allow certain
    subnets and block everyone else:
 
 ```yaml
-    allow: [ 192.168.55.0/24, 172.16.10.0/24, 127.0.0.1/8 ]
-    deny:  [ 192.168.1.1/32, 192.168.80.0/24, 172.16.5.0/24 ]
+allow: [192.168.55.0/24, 172.16.10.0/24, 127.0.0.1/8]
+deny: [192.168.1.1/32, 192.168.80.0/24, 172.16.5.0/24]
 ```
 
-
 ## Development Notes
+
 If you are a developer, the notes here will be useful for you:
 
 - The code uses go modules; so, you'll need a reasonably new go toolchain (1.10+)
 
 - The go-tunnel code is in `./src`:
 
-    * main.go: `main()` for `gotun`
-    * server.go: Implements TCP/TLS and Quic servers; also
-      implements the SOCKS server protocol
-    * conf.go: YAML configuration file parser
-    * quicdial.go: Dial outbound connections via Quic + streams
-    * tcpdial.go: Dial outbound connections via TCP
-    * safety.go: Safely open files/dirs referenced in config file
+  - main.go: `main()` for `gotun`
+  - server.go: Implements TCP/TLS and Quic servers; also
+    implements the SOCKS server protocol
+  - conf.go: YAML configuration file parser
+  - quicdial.go: Dial outbound connections via Quic + streams
+  - tcpdial.go: Dial outbound connections via TCP
+  - safety.go: Safely open files/dirs referenced in config file
 
 - Tests: running tests: `go test -v ./src`
   Some of the tests/helpers:
-    * mocked_test.go: Mock servers and clients
-    * tcp_test.go: Tests for TCP/TLS to TCP/TLS
-    * quic_test.go: Tests for TCP/TLS to Quic and vice versa
-    * socks_test.go: Tests for socks (includes a test for the
-      example configuration above)
-    * utils_test.go: test helpers (e.g., `assert()`)
+
+  - mocked_test.go: Mock servers and clients
+  - tcp_test.go: Tests for TCP/TLS to TCP/TLS
+  - quic_test.go: Tests for TCP/TLS to Quic and vice versa
+  - socks_test.go: Tests for socks (includes a test for the
+    example configuration above)
+  - utils_test.go: test helpers (e.g., `assert()`)
 
 - We build `build` - a a master shell script to build the daemons;
   it does two very important things:
 
-    * Puts the binary in an OS/Arch specific directory
-    * Injects a git version-tag into the final binary ("linker resolved symbol")
+  - Puts the binary in an OS/Arch specific directory
+  - Injects a git version-tag into the final binary ("linker resolved symbol")
 
   This script can be reused for other go projects.
 
 - Example config files is in the `etc/gotun.conf` directory.
 
-
-
+- In order to support working in an SGX enclave, a customized version is of `golang/net` is required, it is already included in the `src/` directory. There is also a way to update/restore the module by downloading it from https://github.com/EErikas/net or by executing `make update`. This worakround is needed because on Linux golang uses `recvmmsg` syscall, whereas EGo (v0.4.2) does not support this syscall in the secure enclave. The customized library forces linux to use `recvmsg` syscall which is supported.
