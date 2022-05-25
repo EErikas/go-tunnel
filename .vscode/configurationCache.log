@@ -1,1 +1,0 @@
-{"buildTargets":["all","bin","clean","enclave","realclean","test"],"launchTargets":["/home/erikas/go-tunnel>a.out()"],"customConfigurationProvider":{"workspaceBrowse":{"browsePath":[],"compilerArgs":[]},"fileIndex":[]}}
