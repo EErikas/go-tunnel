@@ -14,6 +14,10 @@ import (
 	"path"
 )
 
+// To simplify the idea behind the permissions:
+// -> the certificate and key files need to have a umask of 0011
+// -> folder where the application and certificates are stroed should have umask of 0015
+
 // Safely open a file named in the config-file
 func (c *Conf) SafeOpenFile(fn string, secure bool) (*os.File, error) {
 
@@ -138,8 +142,16 @@ func (c *Conf) SafeOpen(dn string, secure bool) ([]*os.File, error) {
 		}
 		m = fi.Mode()
 		if (m & mask) != 0 {
-			// return fail(fmt.Errorf("%s: insecure perms (group/world read/write)", nm))
-			fmt.Printf("insecure perms on %s (group/world write), countinuing...", nm)
+			if os.Getenv("IGNORE_PERMS") == "1" {
+				fmt.Printf("Ignoring insecure permissions on %s (%s vs %s)\n", nm, mask.String(), m.String())
+				fmt.Println("WARNING: Set \"IGNORE_PERMS\" flag to \"1\" only if you're running on secure enclave")
+			} else {
+				var expected os.FileMode = 0015
+				if secure {
+					expected = 0011
+				}
+				return fail(fmt.Errorf("insecure permissions on %s (%s vs %s)", nm, expected.String(), m.String()))
+			}
 
 		}
 	}
@@ -156,8 +168,16 @@ func checkStat(fi os.FileInfo, nm string, secure bool) error {
 
 	m := fi.Mode()
 	if (m & mask) != 0 {
-		// return fmt.Errorf("insecure perms on %s (group/world read/write)", nm)
-		fmt.Printf("insecure perms on %s (group/world write), countinuing...", nm)
+		if os.Getenv("IGNORE_PERMS") == "1" {
+			fmt.Printf("Ignoring insecure permissions on %s (%s vs %s)\n", nm, mask.String(), m.String())
+			fmt.Println("WARNING: Set \"IGNORE_PERMS\" flag to \"1\" only if you're running on secure enclave")
+		} else {
+			var expected os.FileMode = 0015
+			if secure {
+				expected = 0011
+			}
+			return fmt.Errorf("insecure permissions on %s (%s vs %s)", nm, expected.String(), m.String())
+		}
 
 	}
 
@@ -174,10 +194,17 @@ func checkStat(fi os.FileInfo, nm string, secure bool) error {
 		}
 		m = fi.Mode()
 		if (m & 0022) != 0 {
-			// return fmt.Errorf("insecure perms on %s (group/world write)", dir)
-			fmt.Printf("insecure perms on %s (group/world write), countinuing...", dir)
+			if os.Getenv("IGNORE_PERMS") == "1" {
+				fmt.Printf("Ignoring insecure permissions on %s (%s vs %s)\n", dir, mask.String(), m.String())
+				fmt.Println("WARNING: Set \"IGNORE_PERMS\" flag to \"1\" only if you're running on secure enclave")
+			} else {
+				var expected os.FileMode = 0015
+				if secure {
+					expected = 0011
+				}
+				return fmt.Errorf("insecure permissions on %s (%s vs %s)", dir, expected.String(), m.String())
+			}
 		}
-
 		nm = dir
 	}
 	return nil
