@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed May 11 11:23:18 2022
+# Make data base, printed on Wed May 25 10:14:45 2022
 
 # Variables
 
@@ -39,7 +39,7 @@ GDMSESSION = pop
 # environment
 XMODIFIERS = @im=ibus
 # makefile
-CURDIR := /home/erikas/Documents/go-tunnel
+CURDIR := /home/erikas/go-tunnel
 # makefile
 SHELL = /bin/sh
 # environment
@@ -47,7 +47,7 @@ VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupp
 # environment
 _ = /usr/share/code/code
 # environment
-JOURNAL_STREAM = 8:51170
+JOURNAL_STREAM = 8:69254
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-pop:/etc/xdg
 # makefile (from 'Makefile', line 1)
@@ -59,6 +59,8 @@ GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
 # environment
 USERNAME = erikas
 # environment
+MANDATORY_PATH = /usr/share/gconf/pop.mandatory.path
+# environment
 XDG_DATA_DIRS = /usr/share/pop:/home/erikas/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
@@ -67,7 +69,7 @@ DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-MANAGERPID = 2534
+MANAGERPID = 5515
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -81,7 +83,7 @@ PATH = /home/erikas/.local/bin:/home/erikas/.local/bin:/usr/local/sbin:/usr/loca
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/pop-os:@/tmp/.ICE-unix/2807,unix/pop-os:/tmp/.ICE-unix/2807
+SESSION_MANAGER = local/pop-os:@/tmp/.ICE-unix/5776,unix/pop-os:/tmp/.ICE-unix/5776
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -93,7 +95,7 @@ VSCODE_LOG_STACK = false
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = 9359b7f0db5148089abeb24dc7547368
+INVOCATION_ID = a62e63c7aa9b4d718ccf16085e36038d
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -103,7 +105,7 @@ XDG_SESSION_DESKTOP = pop
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 3836
+GIO_LAUNCHED_DESKTOP_FILE_PID = 12931
 # automatic
 %F = $(notdir $%)
 # environment
@@ -111,11 +113,11 @@ DISPLAY = :1
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
-PWD = /home/erikas/Documents/go-tunnel
+PWD = /home/erikas/go-tunnel
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 2765
+SSH_AGENT_PID = 5736
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = pop:GNOME
 # environment
@@ -127,7 +129,7 @@ HOME = /home/erikas
 # environment
 LESSCLOSE = /usr/bin/lesspipe %s %s
 # environment
-VSCODE_CODE_CACHE_PATH = /home/erikas/.config/Code/CachedData/57fd6d0195bb9b9d1b49f6da5db789060795de47
+VSCODE_CODE_CACHE_PATH = /home/erikas/.config/Code/CachedData/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
 # environment
 LOGNAME = erikas
 # environment
@@ -151,7 +153,7 @@ SHLVL = 0
 # environment
 GNOME_SHELL_SESSION_MODE = pop
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-33419e0d-9daf-4c8c-9bc7-4114eb55e78f.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-0cf49c50-62a4-4737-b227-b81565126071.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -169,7 +171,7 @@ MAKE_COMMAND := make
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-4db53dfc-1.67.0-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-4db53dfc-1.67.2-main.sock
 # makefile
 MAKEFLAGS = pqrR
 # environment
@@ -184,6 +186,8 @@ GDK_BACKEND = x11
 +F = $(notdir $+)
 # environment
 QT_ACCESSIBILITY = 1
+# environment
+DEFAULTS_PATH = /usr/share/gconf/pop.default.path
 # default
 MAKEFILES := 
 # automatic
@@ -209,9 +213,9 @@ GJS_DEBUG_OUTPUT = stderr
 # environment
 LANG = C
 # environment
-VSCODE_PID = 3836
+VSCODE_PID = 12931
 # variable set hash-table stats:
-# Load=100/1024=10%, Rehash=0, Collisions=14/128=11%
+# Load=102/1024=10%, Rehash=0, Collisions=14/130=11%
 
 # Pattern-specific Variable Values
 
@@ -219,7 +223,7 @@ VSCODE_PID = 3836
 
 # Directories
 
-# . (device 66309, inode 3935754): 20 files, no impossibilities.
+# . (device 66309, inode 4327038): 20 files, no impossibilities.
 
 # 20 files, no impossibilities in 1 directories.
 
@@ -275,12 +279,13 @@ bin:
 .SUFFIXES:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
+ 
 #  File has not been updated.
 
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-05 20:52:23.335527625
+#  Last modified 2022-05-23 17:26:23.427061355
 #  File has been updated.
 #  Successfully updated.
 
@@ -297,7 +302,6 @@ test:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
- 
 #  recipe to execute (from 'Makefile', line 10):
 	go test -v ./src
 
@@ -324,7 +328,7 @@ enclave:
 	cd src && ego-go build -o gotun
 	mkdir -p bin/enclave
 	mv src/gotun bin/enclave/gotun
-	cp sgx/* bin/enclave/
+	cp -r sgx/* bin/enclave/
 	cd bin/enclave && ego sign
 
 # files hash-table stats:
@@ -341,6 +345,6 @@ enclave:
 # strcache performance: lookups = 50 / hit rate = 40%
 # hash-table stats:
 # Load=30/8192=0%, Rehash=0, Collisions=1/50=2%
-# Finished Make data base on Wed May 11 11:23:18 2022
+# Finished Make data base on Wed May 25 10:14:45 2022
 
  
