@@ -1,18 +1,7 @@
 # Go Networking
 
-[![Go Reference](https://pkg.go.dev/badge/golang.org/x/net.svg)](https://pkg.go.dev/golang.org/x/net)
+This repository holds a for of supplementary Go networking libraries.
 
-This repository holds supplementary Go networking libraries.
+In this version support for multiple reads and writes on linux for methods `ReadBatch()` and `WriteBatch()`  in `net/ipv4` and `net/ipv6` have been disabled. 
 
-## Download/Install
-
-The easiest way to install is to run `go get -u golang.org/x/net`. You can
-also manually git clone the repository to `$GOPATH/src/golang.org/x/net`.
-
-## Report Issues / Send Patches
-
-This repository uses Gerrit for code changes. To learn how to submit
-changes to this repository, see https://golang.org/doc/contribute.html.
-The main issue tracker for the net repository is located at
-https://github.com/golang/go/issues. Prefix your issue with "x/net:" in the
-subject line, so it is easy to find.
+If you you don't want this behaviour, you should use the official [golang/net](https://github.com/golang/net) library.

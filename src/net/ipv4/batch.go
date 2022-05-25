@@ -62,9 +62,9 @@ type Message = socket.Message
 // On a successful read it returns the number of messages received, up
 // to len(ms).
 //
-// On Linux, a batch read will be optimized.
-// On other platforms, this method will read only a single message.
+// On all platforms, this method will read only a single message.
 //
+
 // Unlike the ReadFrom method, it doesn't strip the IPv4 header
 // followed by option headers from the received IPv4 datagram when the
 // underlying transport is net.IPConn. Each Buffers field of Message
@@ -74,14 +74,6 @@ func (c *payloadHandler) ReadBatch(ms []Message, flags int) (int, error) {
 	if !c.ok() {
 		return 0, errInvalidConn
 	}
-	// switch runtime.GOOS {
-	// case "linux":
-	// 	n, err := c.RecvMsgs([]socket.Message(ms), flags)
-	// 	if err != nil {
-	// 		err = &net.OpError{Op: "read", Net: c.PacketConn.LocalAddr().Network(), Source: c.PacketConn.LocalAddr(), Err: err}
-	// 	}
-	// 	return n, err
-	// default:
 	n := 1
 	err := c.RecvMsg(&ms[0], flags)
 	if err != nil {
@@ -92,7 +84,6 @@ func (c *payloadHandler) ReadBatch(ms []Message, flags int) (int, error) {
 		adjustFreeBSD32(&ms[0])
 	}
 	return n, err
-	// }
 }
 
 // WriteBatch writes a batch of messages.
@@ -102,20 +93,11 @@ func (c *payloadHandler) ReadBatch(ms []Message, flags int) (int, error) {
 //
 // It returns the number of messages written on a successful write.
 //
-// On Linux, a batch write will be optimized.
-// On other platforms, this method will write only a single message.
+// On all platforms, this method will write only a single message.
 func (c *payloadHandler) WriteBatch(ms []Message, flags int) (int, error) {
 	if !c.ok() {
 		return 0, errInvalidConn
 	}
-	// switch runtime.GOOS {
-	// case "linux":
-	// 	n, err := c.SendMsgs([]socket.Message(ms), flags)
-	// 	if err != nil {
-	// 		err = &net.OpError{Op: "write", Net: c.PacketConn.LocalAddr().Network(), Source: c.PacketConn.LocalAddr(), Err: err}
-	// 	}
-	// 	return n, err
-	// default:
 	n := 1
 	err := c.SendMsg(&ms[0], flags)
 	if err != nil {
@@ -123,7 +105,6 @@ func (c *payloadHandler) WriteBatch(ms []Message, flags int) (int, error) {
 		err = &net.OpError{Op: "write", Net: c.PacketConn.LocalAddr().Network(), Source: c.PacketConn.LocalAddr(), Err: err}
 	}
 	return n, err
-	// }
 }
 
 // ReadBatch reads a batch of messages.
@@ -134,20 +115,11 @@ func (c *payloadHandler) WriteBatch(ms []Message, flags int) (int, error) {
 // On a successful read it returns the number of messages received, up
 // to len(ms).
 //
-// On Linux, a batch read will be optimized.
-// On other platforms, this method will read only a single message.
+// On all platforms, this method will read only a single message.
 func (c *packetHandler) ReadBatch(ms []Message, flags int) (int, error) {
 	if !c.ok() {
 		return 0, errInvalidConn
 	}
-	// switch runtime.GOOS {
-	// case "linux":
-	// 	n, err := c.RecvMsgs([]socket.Message(ms), flags)
-	// 	if err != nil {
-	// 		err = &net.OpError{Op: "read", Net: c.IPConn.LocalAddr().Network(), Source: c.IPConn.LocalAddr(), Err: err}
-	// 	}
-	// 	return n, err
-	// default:
 	n := 1
 	err := c.RecvMsg(&ms[0], flags)
 	if err != nil {
@@ -158,7 +130,6 @@ func (c *packetHandler) ReadBatch(ms []Message, flags int) (int, error) {
 		adjustFreeBSD32(&ms[0])
 	}
 	return n, err
-	// }
 }
 
 // WriteBatch writes a batch of messages.
@@ -168,20 +139,11 @@ func (c *packetHandler) ReadBatch(ms []Message, flags int) (int, error) {
 //
 // It returns the number of messages written on a successful write.
 //
-// On Linux, a batch write will be optimized.
-// On other platforms, this method will write only a single message.
+// On all platforms, this method will write only a single message.
 func (c *packetHandler) WriteBatch(ms []Message, flags int) (int, error) {
 	if !c.ok() {
 		return 0, errInvalidConn
 	}
-	// switch runtime.GOOS {
-	// case "linux":
-	// 	n, err := c.SendMsgs([]socket.Message(ms), flags)
-	// 	if err != nil {
-	// 		err = &net.OpError{Op: "write", Net: c.IPConn.LocalAddr().Network(), Source: c.IPConn.LocalAddr(), Err: err}
-	// 	}
-	// 	return n, err
-	// default:
 	n := 1
 	err := c.SendMsg(&ms[0], flags)
 	if err != nil {
@@ -189,5 +151,4 @@ func (c *packetHandler) WriteBatch(ms []Message, flags int) (int, error) {
 		err = &net.OpError{Op: "write", Net: c.IPConn.LocalAddr().Network(), Source: c.IPConn.LocalAddr(), Err: err}
 	}
 	return n, err
-	// }
 }
